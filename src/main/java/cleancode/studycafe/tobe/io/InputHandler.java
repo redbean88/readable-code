@@ -15,13 +15,13 @@ public class InputHandler {
         String userInput = SCANNER.nextLine();
 
         if ("1".equals(userInput)) {
-            return Ticket.시간단위이용권;
+            return Ticket.HOURLY;
         }
         if ("2".equals(userInput)) {
-            return Ticket.주단위이용권;
+            return Ticket.WEEKLY;
         }
         if ("3".equals(userInput)) {
-            return Ticket.일인고정석;
+            return Ticket.FIXED;
         }
         throw new AppException("잘못된 입력입니다.");
     }

@@ -11,11 +11,13 @@ import java.util.List;
 
 public class LockerRepositoryImp implements LockerRepository {
 
-    @Override
-    public List<StudyCafeLockerPass> findAll() {
+    public static final List<StudyCafeLockerPass> LOCKER_PASSES = new ArrayList<>();
+    ;
+
+    public LockerRepositoryImp() {
         try {
-            List<String> lines = Files.readAllLines(Paths.get("src/main/resources/cleancode/studycafe/locker.csv"));
-            List<StudyCafeLockerPass> lockerPasses = new ArrayList<>();
+            List<String> lines = Files.readAllLines(
+                Paths.get("src/main/resources/cleancode/studycafe/locker.csv"));
             for (String line : lines) {
                 String[] values = line.split(",");
                 Ticket ticket = Ticket.valueOf(values[0]);
@@ -24,12 +26,26 @@ public class LockerRepositoryImp implements LockerRepository {
                 Money money = Money.of(price);
 
                 StudyCafeLockerPass lockerPass = StudyCafeLockerPass.of(ticket, duration, money);
-                lockerPasses.add(lockerPass);
+                LOCKER_PASSES.add(lockerPass);
             }
-
-            return lockerPasses;
         } catch (IOException e) {
             throw new RuntimeException("파일을 읽는데 실패했습니다.", e);
         }
+
+    }
+
+    @Override
+    public List<StudyCafeLockerPass> findAll() {
+        return LOCKER_PASSES;
+    }
+
+    @Override
+    public StudyCafeLockerPass findByStateAndDuration(Ticket ticket, int duration) {
+        return LOCKER_PASSES.stream()
+            .filter(option ->
+                option.getPassType() == ticket && option.getDuration() == duration
+            )
+            .findFirst()
+            .orElse(null);
     }
 }

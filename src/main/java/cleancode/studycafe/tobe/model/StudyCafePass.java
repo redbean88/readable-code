@@ -37,13 +37,13 @@ public class StudyCafePass {
     }
 
     public String display() {
-        if (passType == Ticket.시간단위이용권) {
+        if (passType == Ticket.HOURLY) {
             return String.format("%s시간권 - %s원", duration, money);
         }
-        if (passType == Ticket.주단위이용권) {
+        if (passType == Ticket.WEEKLY) {
             return String.format("%s주권 - %s원", duration, money);
         }
-        if (passType == Ticket.일인고정석) {
+        if (passType == Ticket.FIXED) {
             return String.format("%s주권 - %s원", duration, money);
         }
         return "";

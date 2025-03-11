@@ -33,50 +33,31 @@ public class StudyCafePassMachine {
             outputHandler.askPassTypeSelection();
             Ticket ticket = inputHandler.getPassTypeSelectingUserAction();
 
-            if (ticket == Ticket.시간단위이용권) {
-                List<StudyCafePass> studyCafePasses = priceRepository.findAll();
-                List<StudyCafePass> hourlyPasses = studyCafePasses.stream()
-                    .filter(studyCafePass -> studyCafePass.getPassType() == Ticket.시간단위이용권)
-                    .toList();
-                outputHandler.showPassListForSelection(hourlyPasses);
-                StudyCafePass selectedPass = inputHandler.getSelectPass(hourlyPasses);
-                outputHandler.showPassOrderSummary(selectedPass, null);
-            } else if (ticket == Ticket.주단위이용권) {
-                List<StudyCafePass> studyCafePasses = priceRepository.findAll();
-                List<StudyCafePass> weeklyPasses = studyCafePasses.stream()
-                    .filter(studyCafePass -> studyCafePass.getPassType() == Ticket.주단위이용권)
-                    .toList();
-                outputHandler.showPassListForSelection(weeklyPasses);
-                StudyCafePass selectedPass = inputHandler.getSelectPass(weeklyPasses);
-                outputHandler.showPassOrderSummary(selectedPass, null);
-            } else if (ticket == Ticket.일인고정석) {
-                List<StudyCafePass> studyCafePasses = priceRepository.findAll();
-                List<StudyCafePass> fixedPasses = studyCafePasses.stream()
-                    .filter(studyCafePass -> studyCafePass.getPassType() == Ticket.일인고정석)
-                    .toList();
-                outputHandler.showPassListForSelection(fixedPasses);
-                StudyCafePass selectedPass = inputHandler.getSelectPass(fixedPasses);
+            List<StudyCafePass> hourlyPasses = priceRepository.findByTicket(ticket);
+            outputHandler.showPassListForSelection(hourlyPasses);
+            StudyCafePass selectedPass = inputHandler.getSelectPass(hourlyPasses);
 
-                List<StudyCafeLockerPass> lockerPasses = lockerRepository.findAll();
-                StudyCafeLockerPass lockerPass = lockerPasses.stream()
-                    .filter(option ->
-                        option.getPassType() == selectedPass.getPassType()
-                            && option.getDuration() == selectedPass.getDuration()
-                    )
-                    .findFirst()
-                    .orElse(null);
-
-                boolean lockerSelection = false;
-                if (lockerPass != null) {
-                    outputHandler.askLockerPass(lockerPass);
-                    lockerSelection = inputHandler.getLockerSelection();
-                }
-
-                if (lockerSelection) {
-                    outputHandler.showPassOrderSummary(selectedPass, lockerPass);
-                } else {
+            switch (ticket) {
+                case HOURLY:
+                case WEEKLY:
                     outputHandler.showPassOrderSummary(selectedPass, null);
-                }
+                    break;
+                case FIXED:
+                    StudyCafeLockerPass lockerPass = lockerRepository.findByStateAndDuration(selectedPass.getPassType(), selectedPass.getDuration());
+                    boolean lockerSelection = false;
+                    if (lockerPass != null) {
+                        outputHandler.askLockerPass(lockerPass);
+                        lockerSelection = inputHandler.getLockerSelection();
+                    }
+
+                    if (lockerSelection) {
+                        outputHandler.showPassOrderSummary(selectedPass, lockerPass);
+                    } else {
+                        outputHandler.showPassOrderSummary(selectedPass, null);
+                    }
+                    break;
+                default:
+                    outputHandler.showSimpleMessage("선택 할 수 없는 구분입니다.");
             }
         } catch (AppException e) {
             outputHandler.showSimpleMessage(e.getMessage());

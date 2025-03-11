@@ -11,12 +11,11 @@ import java.util.List;
 
 public class PriceRepositoryImp implements PriceRepository {
 
-    @Override
-    public List<StudyCafePass> findAll() {
+    private static final List<StudyCafePass> STUDY_CAFE_PASSES = new ArrayList<>();
+
+    public PriceRepositoryImp() {
         try {
-            List<String> lines = Files.readAllLines(
-                Paths.get("src/main/resources/cleancode/studycafe/pass-list.csv"));
-            List<StudyCafePass> studyCafePasses = new ArrayList<>();
+            List<String> lines = Files.readAllLines(Paths.get("src/main/resources/cleancode/studycafe/pass-list.csv"));
             for (String line : lines) {
                 String[] values = line.split(",");
                 Ticket ticket = Ticket.valueOf(values[0]);
@@ -25,14 +24,24 @@ public class PriceRepositoryImp implements PriceRepository {
                 Money money = Money.of(price);
                 double discountRate = Double.parseDouble(values[3]);
 
-                StudyCafePass studyCafePass = StudyCafePass.of(ticket, duration, money,
-                    discountRate);
-                studyCafePasses.add(studyCafePass);
+                StudyCafePass studyCafePass = StudyCafePass.of(ticket, duration, money, discountRate);
+                STUDY_CAFE_PASSES.add(studyCafePass);
             }
-
-            return studyCafePasses;
         } catch (IOException e) {
             throw new RuntimeException("파일을 읽는데 실패했습니다.", e);
         }
+
+    }
+
+    @Override
+    public List<StudyCafePass> findAll() {
+        return STUDY_CAFE_PASSES;
+    }
+
+    @Override
+    public List<StudyCafePass> findByTicket(Ticket ticket) {
+        return STUDY_CAFE_PASSES.stream()
+            .filter(studyCafePass -> studyCafePass.getPassType() == ticket)
+            .toList();
     }
 }
