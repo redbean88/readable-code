@@ -3,6 +3,8 @@ package cleancode.studycafe.tobe.io;
 import cleancode.studycafe.tobe.model.StudyCafeLockerPass;
 import cleancode.studycafe.tobe.model.StudyCafePass;
 
+import cleancode.studycafe.tobe.vo.Money;
+import java.lang.reflect.Member;
 import java.util.List;
 
 public class OutputHandler {
@@ -51,12 +53,10 @@ public class OutputHandler {
         }
 
         double discountRate = selectedPass.getDiscountRate();
-        int discountPrice = (int) (selectedPass.getPrice() * discountRate);
-        if (discountPrice > 0) {
-            System.out.println("이벤트 할인 금액: " + discountPrice + "원");
-        }
+        Money discountPrice = selectedPass.getPrice().multiply(discountRate);
+        System.out.println("이벤트 할인 금액: " + discountPrice + "원");
 
-        int totalPrice = selectedPass.getPrice() - discountPrice + (lockerPass != null ? lockerPass.getPrice() : 0);
+        Money totalPrice = selectedPass.getPrice().subtract(discountPrice).add(lockerPass != null ? lockerPass.getPrice() : Money.ofZero());
         System.out.println("총 결제 금액: " + totalPrice + "원");
         System.out.println();
     }

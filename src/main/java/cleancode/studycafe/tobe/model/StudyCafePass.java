@@ -1,21 +1,23 @@
 package cleancode.studycafe.tobe.model;
 
+import cleancode.studycafe.tobe.vo.Money;
+
 public class StudyCafePass {
 
     private final StudyCafePassType passType;
     private final int duration;
-    private final int price;
+    private final Money money;
     private final double discountRate;
 
-    private StudyCafePass(StudyCafePassType passType, int duration, int price, double discountRate) {
+    private StudyCafePass(StudyCafePassType passType, int duration, Money money, double discountRate) {
         this.passType = passType;
         this.duration = duration;
-        this.price = price;
+        this.money = money;
         this.discountRate = discountRate;
     }
 
-    public static StudyCafePass of(StudyCafePassType passType, int duration, int price, double discountRate) {
-        return new StudyCafePass(passType, duration, price, discountRate);
+    public static StudyCafePass of(StudyCafePassType passType, int duration, Money money, double discountRate) {
+        return new StudyCafePass(passType, duration, money, discountRate);
     }
 
     public StudyCafePassType getPassType() {
@@ -26,8 +28,8 @@ public class StudyCafePass {
         return duration;
     }
 
-    public int getPrice() {
-        return price;
+    public Money getPrice() {
+        return money;
     }
 
     public double getDiscountRate() {
@@ -36,13 +38,13 @@ public class StudyCafePass {
 
     public String display() {
         if (passType == StudyCafePassType.HOURLY) {
-            return String.format("%s시간권 - %d원", duration, price);
+            return String.format("%s시간권 - %s원", duration, money);
         }
         if (passType == StudyCafePassType.WEEKLY) {
-            return String.format("%s주권 - %d원", duration, price);
+            return String.format("%s주권 - %s원", duration, money);
         }
         if (passType == StudyCafePassType.FIXED) {
-            return String.format("%s주권 - %d원", duration, price);
+            return String.format("%s주권 - %s원", duration, money);
         }
         return "";
     }

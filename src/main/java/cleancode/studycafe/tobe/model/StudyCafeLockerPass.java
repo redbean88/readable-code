@@ -1,19 +1,21 @@
 package cleancode.studycafe.tobe.model;
 
+import cleancode.studycafe.tobe.vo.Money;
+
 public class StudyCafeLockerPass {
 
     private final StudyCafePassType passType;
     private final int duration;
-    private final int price;
+    private final Money money;
 
-    private StudyCafeLockerPass(StudyCafePassType passType, int duration, int price) {
+    private StudyCafeLockerPass(StudyCafePassType passType, int duration, Money money) {
         this.passType = passType;
         this.duration = duration;
-        this.price = price;
+        this.money = money;
     }
 
-    public static StudyCafeLockerPass of(StudyCafePassType passType, int duration, int price) {
-        return new StudyCafeLockerPass(passType, duration, price);
+    public static StudyCafeLockerPass of(StudyCafePassType passType, int duration, Money money) {
+        return new StudyCafeLockerPass(passType, duration, money);
     }
 
     public StudyCafePassType getPassType() {
@@ -24,19 +26,19 @@ public class StudyCafeLockerPass {
         return duration;
     }
 
-    public int getPrice() {
-        return price;
+    public Money getPrice() {
+        return money;
     }
 
     public String display() {
         if (passType == StudyCafePassType.HOURLY) {
-            return String.format("%s시간권 - %d원", duration, price);
+            return String.format("%s시간권 - %s원", duration, money);
         }
         if (passType == StudyCafePassType.WEEKLY) {
-            return String.format("%s주권 - %d원", duration, price);
+            return String.format("%s주권 - %s원", duration, money);
         }
         if (passType == StudyCafePassType.FIXED) {
-            return String.format("%s주권 - %d원", duration, price);
+            return String.format("%s주권 - %s원", duration, money);
         }
         return "";
     }
