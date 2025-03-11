@@ -6,7 +6,7 @@ import cleancode.studycafe.tobe.io.OutputHandler;
 import cleancode.studycafe.tobe.io.StudyCafeFileHandler;
 import cleancode.studycafe.tobe.model.StudyCafeLockerPass;
 import cleancode.studycafe.tobe.model.StudyCafePass;
-import cleancode.studycafe.tobe.model.StudyCafePassType;
+import cleancode.studycafe.tobe.model.Ticket;
 
 import java.util.List;
 
@@ -21,31 +21,31 @@ public class StudyCafePassMachine {
             outputHandler.showAnnouncement();
 
             outputHandler.askPassTypeSelection();
-            StudyCafePassType studyCafePassType = inputHandler.getPassTypeSelectingUserAction();
+            Ticket ticket = inputHandler.getPassTypeSelectingUserAction();
 
-            if (studyCafePassType == StudyCafePassType.HOURLY) {
+            if (ticket == Ticket.시간단위이용권) {
                 StudyCafeFileHandler studyCafeFileHandler = new StudyCafeFileHandler();
                 List<StudyCafePass> studyCafePasses = studyCafeFileHandler.readStudyCafePasses();
                 List<StudyCafePass> hourlyPasses = studyCafePasses.stream()
-                    .filter(studyCafePass -> studyCafePass.getPassType() == StudyCafePassType.HOURLY)
+                    .filter(studyCafePass -> studyCafePass.getPassType() == Ticket.시간단위이용권)
                     .toList();
                 outputHandler.showPassListForSelection(hourlyPasses);
                 StudyCafePass selectedPass = inputHandler.getSelectPass(hourlyPasses);
                 outputHandler.showPassOrderSummary(selectedPass, null);
-            } else if (studyCafePassType == StudyCafePassType.WEEKLY) {
+            } else if (ticket == Ticket.주단위이용권) {
                 StudyCafeFileHandler studyCafeFileHandler = new StudyCafeFileHandler();
                 List<StudyCafePass> studyCafePasses = studyCafeFileHandler.readStudyCafePasses();
                 List<StudyCafePass> weeklyPasses = studyCafePasses.stream()
-                    .filter(studyCafePass -> studyCafePass.getPassType() == StudyCafePassType.WEEKLY)
+                    .filter(studyCafePass -> studyCafePass.getPassType() == Ticket.주단위이용권)
                     .toList();
                 outputHandler.showPassListForSelection(weeklyPasses);
                 StudyCafePass selectedPass = inputHandler.getSelectPass(weeklyPasses);
                 outputHandler.showPassOrderSummary(selectedPass, null);
-            } else if (studyCafePassType == StudyCafePassType.FIXED) {
+            } else if (ticket == Ticket.일인고정석) {
                 StudyCafeFileHandler studyCafeFileHandler = new StudyCafeFileHandler();
                 List<StudyCafePass> studyCafePasses = studyCafeFileHandler.readStudyCafePasses();
                 List<StudyCafePass> fixedPasses = studyCafePasses.stream()
-                    .filter(studyCafePass -> studyCafePass.getPassType() == StudyCafePassType.FIXED)
+                    .filter(studyCafePass -> studyCafePass.getPassType() == Ticket.일인고정석)
                     .toList();
                 outputHandler.showPassListForSelection(fixedPasses);
                 StudyCafePass selectedPass = inputHandler.getSelectPass(fixedPasses);

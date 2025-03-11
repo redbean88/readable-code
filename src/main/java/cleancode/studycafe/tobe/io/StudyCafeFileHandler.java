@@ -2,7 +2,7 @@ package cleancode.studycafe.tobe.io;
 
 import cleancode.studycafe.tobe.model.StudyCafeLockerPass;
 import cleancode.studycafe.tobe.model.StudyCafePass;
-import cleancode.studycafe.tobe.model.StudyCafePassType;
+import cleancode.studycafe.tobe.model.Ticket;
 
 import cleancode.studycafe.tobe.vo.Money;
 import java.io.IOException;
@@ -19,13 +19,13 @@ public class StudyCafeFileHandler {
             List<StudyCafePass> studyCafePasses = new ArrayList<>();
             for (String line : lines) {
                 String[] values = line.split(",");
-                StudyCafePassType studyCafePassType = StudyCafePassType.valueOf(values[0]);
+                Ticket ticket = Ticket.valueOf(values[0]);
                 int duration = Integer.parseInt(values[1]);
                 int price = Integer.parseInt(values[2]);
                 Money money = Money.of(price);
                 double discountRate = Double.parseDouble(values[3]);
 
-                StudyCafePass studyCafePass = StudyCafePass.of(studyCafePassType, duration, money, discountRate);
+                StudyCafePass studyCafePass = StudyCafePass.of(ticket, duration, money, discountRate);
                 studyCafePasses.add(studyCafePass);
             }
 
@@ -41,12 +41,12 @@ public class StudyCafeFileHandler {
             List<StudyCafeLockerPass> lockerPasses = new ArrayList<>();
             for (String line : lines) {
                 String[] values = line.split(",");
-                StudyCafePassType studyCafePassType = StudyCafePassType.valueOf(values[0]);
+                Ticket ticket = Ticket.valueOf(values[0]);
                 int duration = Integer.parseInt(values[1]);
                 int price = Integer.parseInt(values[2]);
                 Money money = Money.of(price);
 
-                StudyCafeLockerPass lockerPass = StudyCafeLockerPass.of(studyCafePassType, duration, money);
+                StudyCafeLockerPass lockerPass = StudyCafeLockerPass.of(ticket, duration, money);
                 lockerPasses.add(lockerPass);
             }
 
