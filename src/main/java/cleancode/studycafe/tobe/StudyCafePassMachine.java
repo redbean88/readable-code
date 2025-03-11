@@ -6,23 +6,23 @@ import cleancode.studycafe.tobe.io.OutputHandler;
 import cleancode.studycafe.tobe.model.StudyCafeLockerPass;
 import cleancode.studycafe.tobe.model.StudyCafePass;
 import cleancode.studycafe.tobe.model.Ticket;
-
 import cleancode.studycafe.tobe.repository.LockerRepository;
-import cleancode.studycafe.tobe.repository.LockerRepositoryImp;
 import cleancode.studycafe.tobe.repository.PriceRepository;
-import cleancode.studycafe.tobe.repository.PriceRepositoryImp;
 import java.util.List;
 
 public class StudyCafePassMachine {
 
-    private final InputHandler inputHandler = new InputHandler();
-    private final OutputHandler outputHandler = new OutputHandler();
+    private final InputHandler inputHandler;
+    private final OutputHandler outputHandler;
     private final PriceRepository priceRepository;
     private final LockerRepository lockerRepository;
 
-    public StudyCafePassMachine() {
-        this.priceRepository = new PriceRepositoryImp();
-        this.lockerRepository = new LockerRepositoryImp();
+    public StudyCafePassMachine(InputHandler inputHandler, OutputHandler outputHandler,
+        PriceRepository priceRepository, LockerRepository lockerRepository) {
+        this.inputHandler = inputHandler;
+        this.outputHandler = outputHandler;
+        this.priceRepository = priceRepository;
+        this.lockerRepository = lockerRepository;
     }
 
     public void run() {

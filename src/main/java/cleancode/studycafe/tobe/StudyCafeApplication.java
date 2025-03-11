@@ -3,7 +3,7 @@ package cleancode.studycafe.tobe;
 public class StudyCafeApplication {
 
     public static void main(String[] args) {
-        StudyCafePassMachine studyCafePassMachine = new StudyCafePassMachine();
+        StudyCafePassMachine studyCafePassMachine = StudyCafePassMachineContainer.getInstance();
         studyCafePassMachine.run();
     }
 
