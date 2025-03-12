@@ -5,15 +5,15 @@ import cleancode.studycafe.tobe.io.OutputHandler;
 import cleancode.studycafe.tobe.repository.LockerRepositoryImp;
 import cleancode.studycafe.tobe.repository.PriceRepositoryImp;
 
-public class StudyCafePassMachineContainer {
+public class MachineContext {
 
-    private StudyCafePassMachineContainer() {}
+    private MachineContext() {}
 
     private static class Holder{
-        private static final StudyCafePassMachine STUDY_CAFE_PASS_MACHINE = new StudyCafePassMachine( new InputHandler(), new OutputHandler(),  new PriceRepositoryImp(),  new LockerRepositoryImp());
+        private static final TicketKiosk STUDY_CAFE_PASS_MACHINE = new TicketKiosk( new InputHandler(), new OutputHandler(),  new PriceRepositoryImp(),  new LockerRepositoryImp());
     }
 
-    public static StudyCafePassMachine getInstance() {
+    public static TicketKiosk getInstance() {
         return Holder.STUDY_CAFE_PASS_MACHINE;
     }
 

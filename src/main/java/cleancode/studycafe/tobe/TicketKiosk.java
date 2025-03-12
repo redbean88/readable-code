@@ -10,21 +10,21 @@ import cleancode.studycafe.tobe.repository.LockerRepository;
 import cleancode.studycafe.tobe.repository.PriceRepository;
 import java.util.List;
 
-public class StudyCafePassMachine {
+public class TicketKiosk implements Kiosk {
 
     private final InputHandler inputHandler;
     private final OutputHandler outputHandler;
     private final PriceRepository priceRepository;
     private final LockerRepository lockerRepository;
 
-    public StudyCafePassMachine(InputHandler inputHandler, OutputHandler outputHandler,
-        PriceRepository priceRepository, LockerRepository lockerRepository) {
+    public TicketKiosk(InputHandler inputHandler, OutputHandler outputHandler, PriceRepository priceRepository, LockerRepository lockerRepository) {
         this.inputHandler = inputHandler;
         this.outputHandler = outputHandler;
         this.priceRepository = priceRepository;
         this.lockerRepository = lockerRepository;
     }
 
+    @Override
     public void run() {
         try {
             outputHandler.showWelcomeMessage();
