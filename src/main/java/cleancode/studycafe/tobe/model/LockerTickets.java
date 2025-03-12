@@ -41,5 +41,5 @@ public class LockerTickets {
 
     public LockerTicket findFirstOrElseNull(){
         return LOCKER_Tickets.stream().findFirst().orElse(null);
-    };
+    }
 }

@@ -39,9 +39,6 @@ public class Ticket {
         return money;
     }
 
-    public DiscountRate getDiscountRate() {
-        return discountRate;
-    }
 
     public Money calculateDiscountPrice() {
         return Calculator.increaseBy(money, discountRate);
