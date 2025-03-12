@@ -1,9 +1,9 @@
 package cleancode.studycafe.tobe.infra.io;
 
 import cleancode.studycafe.tobe.infra.exception.AppException;
-import cleancode.studycafe.tobe.model.StudyCafeTicket;
+import cleancode.studycafe.tobe.model.Ticket;
 import cleancode.studycafe.tobe.model.Type;
-import cleancode.studycafe.tobe.model.StudyCafeTickets;
+import cleancode.studycafe.tobe.model.Tickets;
 import java.util.Scanner;
 
 public class InputHandler {
@@ -25,10 +25,10 @@ public class InputHandler {
         throw new AppException("잘못된 입력입니다.");
     }
 
-    public StudyCafeTicket getSelectPass(StudyCafeTickets studyCafeTickets) {
+    public Ticket getSelectTicket(Tickets tickets) {
         String userInput = SCANNER.nextLine();
         int selectedIndex = Integer.parseInt(userInput) - 1;
-        return studyCafeTickets.get(selectedIndex);
+        return tickets.get(selectedIndex);
     }
 
     public boolean getLockerSelection() {

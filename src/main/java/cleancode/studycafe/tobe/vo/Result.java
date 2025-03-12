@@ -1,46 +1,46 @@
 package cleancode.studycafe.tobe.vo;
 
-import cleancode.studycafe.tobe.model.StudyCafeLockerTicket;
-import cleancode.studycafe.tobe.model.StudyCafeTicket;
+import cleancode.studycafe.tobe.model.LockerTicket;
+import cleancode.studycafe.tobe.model.Ticket;
 
 public class Result {
 
-    private final StudyCafeTicket selectedPass;
-    private final StudyCafeLockerTicket lockerPass;
+    private final Ticket ticket;
+    private final LockerTicket lockerTicket;
 
-    private Result(StudyCafeTicket selectedPass, StudyCafeLockerTicket lockerPass) {
-        this.selectedPass = selectedPass;
-        this.lockerPass = lockerPass;
+    private Result(Ticket ticket, LockerTicket lockerTicket) {
+        this.ticket = ticket;
+        this.lockerTicket = lockerTicket;
     }
 
-    public static Result of(StudyCafeTicket selectedPass, StudyCafeLockerTicket pass) {
-        return new Result(selectedPass, pass);
+    public static Result of(Ticket ticket, LockerTicket lockerTicket) {
+        return new Result(ticket, lockerTicket);
     }
 
-    public static Result of(StudyCafeTicket selectedPass) {
-        return new Result(selectedPass, null);
+    public static Result of(Ticket ticket) {
+        return new Result(ticket, null);
     }
 
-    public String showSelectedPass() {
-        return selectedPass.display();
+    public String showSelectedTicket() {
+        return ticket.display();
     }
 
-    public boolean hasLockerPass() {
-        return lockerPass != null;
+    public boolean hasLockerTicket() {
+        return lockerTicket != null;
     }
 
-    public String showLockerPass() {
-        return lockerPass.display();
+    public String showLockerTicket() {
+        return lockerTicket.display();
     }
 
     public Money calculateDiscountPrice() {
-        return selectedPass.calculateDiscountPrice();
+        return ticket.calculateDiscountPrice();
     }
 
     public Money calculateTotalPrice() {
-        return selectedPass
+        return ticket
             .getPrice()
             .subtract(calculateDiscountPrice())
-            .add(lockerPass != null ? lockerPass.getPrice() : Money.ofZero());
+            .add(lockerTicket != null ? lockerTicket.getPrice() : Money.ofZero());
     }
 }

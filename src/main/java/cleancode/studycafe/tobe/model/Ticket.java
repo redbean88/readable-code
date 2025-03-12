@@ -4,27 +4,27 @@ import cleancode.studycafe.tobe.utils.Calculator;
 import cleancode.studycafe.tobe.vo.DiscountRate;
 import cleancode.studycafe.tobe.vo.Money;
 
-public class StudyCafeTicket {
+public class Ticket {
 
     private final Type type;
     private final int duration;
     private final Money money;
     private final DiscountRate discountRate;
 
-    private StudyCafeTicket(Type type, int duration, Money money, DiscountRate discountRate) {
+    private Ticket(Type type, int duration, Money money, DiscountRate discountRate) {
         this.type = type;
         this.duration = duration;
         this.money = money;
         this.discountRate = discountRate;
     }
 
-    public static StudyCafeTicket of(Type passType) {
-        return new StudyCafeTicket(passType, 0, Money.ofZero(), DiscountRate.ofOne());
+    public static Ticket of(Type type) {
+        return new Ticket(type, 0, Money.ofZero(), DiscountRate.ofOne());
     }
 
 
-    public static StudyCafeTicket of(Type passType, int duration, Money money, DiscountRate discountRate) {
-        return new StudyCafeTicket(passType, duration, money, discountRate);
+    public static Ticket of(Type type, int duration, Money money, DiscountRate discountRate) {
+        return new Ticket(type, duration, money, discountRate);
     }
 
     public Type getType() {
@@ -46,6 +46,7 @@ public class StudyCafeTicket {
     public Money calculateDiscountPrice() {
         return Calculator.increaseBy(money, discountRate);
     }
+
 
     public String display() {
         if (type == Type.HOURLY) {

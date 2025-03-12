@@ -4,13 +4,13 @@ import cleancode.studycafe.tobe.infra.exception.AppException;
 import cleancode.studycafe.tobe.infra.Kiosk;
 import cleancode.studycafe.tobe.infra.io.InputHandler;
 import cleancode.studycafe.tobe.infra.io.OutputHandler;
-import cleancode.studycafe.tobe.model.StudyCafeLockerTicket;
-import cleancode.studycafe.tobe.model.StudyCafeTicket;
+import cleancode.studycafe.tobe.model.LockerTicket;
+import cleancode.studycafe.tobe.model.Ticket;
 import cleancode.studycafe.tobe.model.Type;
 import cleancode.studycafe.tobe.repository.LockerRepository;
 import cleancode.studycafe.tobe.repository.PriceRepository;
 import cleancode.studycafe.tobe.vo.Result;
-import cleancode.studycafe.tobe.model.StudyCafeTickets;
+import cleancode.studycafe.tobe.model.Tickets;
 
 public class TicketKiosk implements Kiosk {
 
@@ -43,40 +43,39 @@ public class TicketKiosk implements Kiosk {
     private void notice() {
         outputHandler.showWelcomeMessage();
         outputHandler.showAnnouncement();
-        outputHandler.askPassTypeSelection();
+        outputHandler.askTypeSelection();
     }
 
     private void showResult(Result result) {
         if(result == null) {
             outputHandler.showSimpleMessage("선택 할 수 없는 구분입니다.");
         }else {
-            outputHandler.showPassOrderSummary(result);
+            outputHandler.showTicketOrderSummary(result);
         }
     }
 
     private Result chooseTicketByUser() {
         Type type = inputHandler.getTicketSelectedByUser();
 
-        StudyCafeTickets studyCafeTickets = priceRepository.findByTickets(type);
-        outputHandler.showPassListForSelection(studyCafeTickets);
-        StudyCafeTicket selectedStudyCafeTicket = inputHandler.getSelectPass(studyCafeTickets);
+        Tickets tickets = priceRepository.findByType(type);
+        outputHandler.showTicketsForSelection(tickets);
+        Ticket selectedTicket = inputHandler.getSelectTicket(tickets);
 
         switch (type) {
             case HOURLY:
             case WEEKLY:
-                return Result.of(selectedStudyCafeTicket);
+                return Result.of(selectedTicket);
             case FIXED:
-                StudyCafeLockerTicket lockerPass = lockerRepository.findByStateAndDuration(selectedStudyCafeTicket);
+                LockerTicket lockerTicket = lockerRepository.findByStudyCafeTicket(selectedTicket);
                 boolean lockerSelection = false;
-                if (lockerPass != null) {
-                    outputHandler.askLockerPass(lockerPass);
+                if (lockerTicket != null) {
+                    outputHandler.askLockerTicket(lockerTicket);
                     lockerSelection = inputHandler.getLockerSelection();
                 }
-
                 if (lockerSelection) {
-                    return Result.of(selectedStudyCafeTicket, lockerPass);
+                    return Result.of(selectedTicket, lockerTicket);
                 } else {
-                    return Result.of(selectedStudyCafeTicket);
+                    return Result.of(selectedTicket);
                 }
             default:
                 return null;

@@ -11,11 +11,11 @@ public class MachineContext {
     private MachineContext() {}
 
     private static class Holder{
-        private static final TicketKiosk STUDY_CAFE_PASS_MACHINE = new TicketKiosk( new InputHandler(), new OutputHandler(),  new PriceRepositoryImp(),  new LockerRepositoryImp());
+        private static final TicketKiosk STUDY_CAFE_TICKET_MACHINE = new TicketKiosk( new InputHandler(), new OutputHandler(),  new PriceRepositoryImp(),  new LockerRepositoryImp());
     }
 
     public static TicketKiosk getInstance() {
-        return Holder.STUDY_CAFE_PASS_MACHINE;
+        return Holder.STUDY_CAFE_TICKET_MACHINE;
     }
 
 }
