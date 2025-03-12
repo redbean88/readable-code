@@ -67,11 +67,7 @@ public class TicketKiosk implements Kiosk {
                 return Result.of(selectedTicket);
             case FIXED:
                 LockerTicket lockerTicket = lockerRepository.findByStudyCafeTicket(selectedTicket);
-                boolean lockerSelection = false;
-                if (lockerTicket != null) {
-                    outputHandler.askLockerTicket(lockerTicket);
-                    lockerSelection = inputHandler.getLockerSelection();
-                }
+                boolean lockerSelection = isLockerSelectionByUser(lockerTicket);
                 if (lockerSelection) {
                     return Result.of(selectedTicket, lockerTicket);
                 } else {
@@ -80,6 +76,15 @@ public class TicketKiosk implements Kiosk {
             default:
                 return null;
         }
+    }
+
+    private boolean isLockerSelectionByUser(LockerTicket lockerTicket) {
+        boolean lockerSelection = false;
+        if (lockerTicket != null) {
+            outputHandler.askLockerTicket(lockerTicket);
+            lockerSelection = inputHandler.getLockerSelection();
+        }
+        return lockerSelection;
     }
 
 }

@@ -27,7 +27,7 @@ public class LockerTickets {
 
     public LockerTickets filterByType(Type type) {
         List<LockerTicket> filteredResult = new ArrayList<>(LOCKER_Tickets).stream()
-            .filter(ticket -> ticket.getType().equals(type))
+            .filter(ticket -> ticket.getType() == type)
             .toList();
         return of(filteredResult);
     }
