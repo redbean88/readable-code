@@ -1,7 +1,8 @@
-package cleancode.studycafe.tobe;
+package cleancode.studycafe.tobe.infra;
 
-import cleancode.studycafe.tobe.io.InputHandler;
-import cleancode.studycafe.tobe.io.OutputHandler;
+import cleancode.studycafe.tobe.service.TicketKiosk;
+import cleancode.studycafe.tobe.infra.io.InputHandler;
+import cleancode.studycafe.tobe.infra.io.OutputHandler;
 import cleancode.studycafe.tobe.repository.LockerRepositoryImp;
 import cleancode.studycafe.tobe.repository.PriceRepositoryImp;
 

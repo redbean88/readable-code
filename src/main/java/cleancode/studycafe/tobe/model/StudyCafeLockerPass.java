@@ -4,21 +4,21 @@ import cleancode.studycafe.tobe.vo.Money;
 
 public class StudyCafeLockerPass {
 
-    private final Ticket passType;
+    private final Type passType;
     private final int duration;
     private final Money money;
 
-    private StudyCafeLockerPass(Ticket passType, int duration, Money money) {
+    private StudyCafeLockerPass(Type passType, int duration, Money money) {
         this.passType = passType;
         this.duration = duration;
         this.money = money;
     }
 
-    public static StudyCafeLockerPass of(Ticket passType, int duration, Money money) {
+    public static StudyCafeLockerPass of(Type passType, int duration, Money money) {
         return new StudyCafeLockerPass(passType, duration, money);
     }
 
-    public Ticket getPassType() {
+    public Type getPassType() {
         return passType;
     }
 
@@ -31,13 +31,13 @@ public class StudyCafeLockerPass {
     }
 
     public String display() {
-        if (passType == Ticket.HOURLY) {
+        if (passType == Type.HOURLY) {
             return String.format("%s시간권 - %s원", duration, money);
         }
-        if (passType == Ticket.WEEKLY) {
+        if (passType == Type.WEEKLY) {
             return String.format("%s주권 - %s원", duration, money);
         }
-        if (passType == Ticket.FIXED) {
+        if (passType == Type.FIXED) {
             return String.format("%s주권 - %s원", duration, money);
         }
         return "";

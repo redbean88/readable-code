@@ -1,4 +1,4 @@
-package cleancode.studycafe.tobe;
+package cleancode.studycafe.tobe.infra;
 
 public interface Kiosk {
 

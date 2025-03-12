@@ -1,7 +1,6 @@
 package cleancode.studycafe.tobe.vo;
 
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.Objects;
 
 public class Money {
@@ -33,6 +32,8 @@ public class Money {
     public Money multiply(double rate) {
         return new Money(amount * rate);
     }
+
+
 
     @Override
     public boolean equals(Object o) {

@@ -1,7 +1,7 @@
 package cleancode.studycafe.tobe.repository;
 
 import cleancode.studycafe.tobe.model.StudyCafeLockerPass;
-import cleancode.studycafe.tobe.model.Ticket;
+import cleancode.studycafe.tobe.model.Type;
 import cleancode.studycafe.tobe.vo.Money;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,12 +20,12 @@ public class LockerRepositoryImp implements LockerRepository {
                 Paths.get("src/main/resources/cleancode/studycafe/locker.csv"));
             for (String line : lines) {
                 String[] values = line.split(",");
-                Ticket ticket = Ticket.valueOf(values[0]);
+                Type type = Type.valueOf(values[0]);
                 int duration = Integer.parseInt(values[1]);
                 int price = Integer.parseInt(values[2]);
                 Money money = Money.of(price);
 
-                StudyCafeLockerPass lockerPass = StudyCafeLockerPass.of(ticket, duration, money);
+                StudyCafeLockerPass lockerPass = StudyCafeLockerPass.of(type, duration, money);
                 LOCKER_PASSES.add(lockerPass);
             }
         } catch (IOException e) {
@@ -40,10 +40,10 @@ public class LockerRepositoryImp implements LockerRepository {
     }
 
     @Override
-    public StudyCafeLockerPass findByStateAndDuration(Ticket ticket, int duration) {
+    public StudyCafeLockerPass findByStateAndDuration(Type type, int duration) {
         return LOCKER_PASSES.stream()
             .filter(option ->
-                option.getPassType() == ticket && option.getDuration() == duration
+                option.getPassType() == type && option.getDuration() == duration
             )
             .findFirst()
             .orElse(null);

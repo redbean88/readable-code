@@ -1,10 +1,10 @@
-package cleancode.studycafe.tobe.io;
+package cleancode.studycafe.tobe.infra.io;
 
 import cleancode.studycafe.tobe.model.StudyCafeLockerPass;
-import cleancode.studycafe.tobe.model.StudyCafePass;
+import cleancode.studycafe.tobe.model.StudyCafeTicket;
 
 import cleancode.studycafe.tobe.vo.Money;
-import java.lang.reflect.Member;
+import cleancode.studycafe.tobe.vo.Result;
 import java.util.List;
 
 public class OutputHandler {
@@ -24,11 +24,11 @@ public class OutputHandler {
         System.out.println("1. 시간 이용권(자유석) | 2. 주단위 이용권(자유석) | 3. 1인 고정석");
     }
 
-    public void showPassListForSelection(List<StudyCafePass> passes) {
+    public void showPassListForSelection(List<StudyCafeTicket> passes) {
         System.out.println();
         System.out.println("이용권 목록");
         for (int index = 0; index < passes.size(); index++) {
-            StudyCafePass pass = passes.get(index);
+            StudyCafeTicket pass = passes.get(index);
             System.out.println(String.format("%s. ", index + 1) + pass.display());
         }
     }
@@ -44,19 +44,17 @@ public class OutputHandler {
         System.out.println("1. 예 | 2. 아니오");
     }
 
-    public void showPassOrderSummary(StudyCafePass selectedPass, StudyCafeLockerPass lockerPass) {
+    public void showPassOrderSummary(Result result) {
         System.out.println();
         System.out.println("이용 내역");
-        System.out.println("이용권: " + selectedPass.display());
-        if (lockerPass != null) {
-            System.out.println("사물함: " + lockerPass.display());
+        System.out.println("이용권: " + result.showSelectedPass());
+        if (result.hasLockerPass()) {
+            System.out.println("사물함: " + result.showLockerPass());
         }
 
-        double discountRate = selectedPass.getDiscountRate();
-        Money discountPrice = selectedPass.getPrice().multiply(discountRate);
-        System.out.println("이벤트 할인 금액: " + discountPrice + "원");
+        System.out.println("이벤트 할인 금액: " + result.calculateDiscountPrice() + "원");
 
-        Money totalPrice = selectedPass.getPrice().subtract(discountPrice).add(lockerPass != null ? lockerPass.getPrice() : Money.ofZero());
+        Money totalPrice = result.calculateTotalPrice();
         System.out.println("총 결제 금액: " + totalPrice + "원");
         System.out.println();
     }
