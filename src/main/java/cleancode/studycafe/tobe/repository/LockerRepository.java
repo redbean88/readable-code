@@ -1,11 +1,11 @@
 package cleancode.studycafe.tobe.repository;
 
-import cleancode.studycafe.tobe.model.StudyCafeLockerPass;
-import cleancode.studycafe.tobe.model.Type;
-import java.util.List;
+import cleancode.studycafe.tobe.model.StudyCafeLockerTicket;
+import cleancode.studycafe.tobe.model.StudyCafeTicket;
+import cleancode.studycafe.tobe.model.StudyCafeLockerTickets;
 
 public interface LockerRepository {
 
-    List<StudyCafeLockerPass> findAll();
-    StudyCafeLockerPass findByStateAndDuration(Type type, int duration);
+    StudyCafeLockerTickets findAll();
+    StudyCafeLockerTicket findByStateAndDuration(StudyCafeTicket selectedStudyCafeTicket);
 }

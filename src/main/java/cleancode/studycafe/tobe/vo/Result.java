@@ -1,19 +1,19 @@
 package cleancode.studycafe.tobe.vo;
 
-import cleancode.studycafe.tobe.model.StudyCafeLockerPass;
+import cleancode.studycafe.tobe.model.StudyCafeLockerTicket;
 import cleancode.studycafe.tobe.model.StudyCafeTicket;
 
 public class Result {
 
     private final StudyCafeTicket selectedPass;
-    private final StudyCafeLockerPass lockerPass;
+    private final StudyCafeLockerTicket lockerPass;
 
-    private Result(StudyCafeTicket selectedPass, StudyCafeLockerPass lockerPass) {
+    private Result(StudyCafeTicket selectedPass, StudyCafeLockerTicket lockerPass) {
         this.selectedPass = selectedPass;
         this.lockerPass = lockerPass;
     }
 
-    public static Result of(StudyCafeTicket selectedPass, StudyCafeLockerPass pass) {
+    public static Result of(StudyCafeTicket selectedPass, StudyCafeLockerTicket pass) {
         return new Result(selectedPass, pass);
     }
 

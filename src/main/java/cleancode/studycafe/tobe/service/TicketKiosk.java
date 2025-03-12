@@ -4,13 +4,13 @@ import cleancode.studycafe.tobe.infra.exception.AppException;
 import cleancode.studycafe.tobe.infra.Kiosk;
 import cleancode.studycafe.tobe.infra.io.InputHandler;
 import cleancode.studycafe.tobe.infra.io.OutputHandler;
-import cleancode.studycafe.tobe.model.StudyCafeLockerPass;
+import cleancode.studycafe.tobe.model.StudyCafeLockerTicket;
 import cleancode.studycafe.tobe.model.StudyCafeTicket;
 import cleancode.studycafe.tobe.model.Type;
 import cleancode.studycafe.tobe.repository.LockerRepository;
 import cleancode.studycafe.tobe.repository.PriceRepository;
 import cleancode.studycafe.tobe.vo.Result;
-import java.util.List;
+import cleancode.studycafe.tobe.model.StudyCafeTickets;
 
 public class TicketKiosk implements Kiosk {
 
@@ -57,17 +57,16 @@ public class TicketKiosk implements Kiosk {
     private Result chooseTicketByUser() {
         Type type = inputHandler.getTicketSelectedByUser();
 
-        List<StudyCafeTicket> tickets = priceRepository.findByTickets(type);
-        outputHandler.showPassListForSelection(tickets);
-        StudyCafeTicket selectedPass = inputHandler.getSelectPass(tickets);
+        StudyCafeTickets studyCafeTickets = priceRepository.findByTickets(type);
+        outputHandler.showPassListForSelection(studyCafeTickets);
+        StudyCafeTicket selectedStudyCafeTicket = inputHandler.getSelectPass(studyCafeTickets);
 
         switch (type) {
             case HOURLY:
             case WEEKLY:
-                return Result.of(selectedPass);
+                return Result.of(selectedStudyCafeTicket);
             case FIXED:
-                StudyCafeLockerPass lockerPass = lockerRepository.findByStateAndDuration(
-                    selectedPass.getTicket(), selectedPass.getDuration());
+                StudyCafeLockerTicket lockerPass = lockerRepository.findByStateAndDuration(selectedStudyCafeTicket);
                 boolean lockerSelection = false;
                 if (lockerPass != null) {
                     outputHandler.askLockerPass(lockerPass);
@@ -75,9 +74,9 @@ public class TicketKiosk implements Kiosk {
                 }
 
                 if (lockerSelection) {
-                    return Result.of(selectedPass, lockerPass);
+                    return Result.of(selectedStudyCafeTicket, lockerPass);
                 } else {
-                    return Result.of(selectedPass);
+                    return Result.of(selectedStudyCafeTicket);
                 }
             default:
                 return null;

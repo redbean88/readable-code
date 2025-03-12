@@ -27,7 +27,7 @@ public class StudyCafeTicket {
         return new StudyCafeTicket(passType, duration, money, discountRate);
     }
 
-    public Type getTicket() {
+    public Type getType() {
         return type;
     }
 

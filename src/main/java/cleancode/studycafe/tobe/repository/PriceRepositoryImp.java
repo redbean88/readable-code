@@ -4,30 +4,30 @@ import cleancode.studycafe.tobe.model.StudyCafeTicket;
 import cleancode.studycafe.tobe.model.Type;
 import cleancode.studycafe.tobe.vo.DiscountRate;
 import cleancode.studycafe.tobe.vo.Money;
+import cleancode.studycafe.tobe.model.StudyCafeTickets;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PriceRepositoryImp implements PriceRepository {
 
-    private static final List<StudyCafeTicket> STUDY_CAFE_TICKETS = new ArrayList<>();
+    private StudyCafeTickets studyCafeTickets = StudyCafeTickets.of();
 
     public PriceRepositoryImp() {
         try {
-            List<String> lines = Files.readAllLines(Paths.get("src/main/resources/cleancode/studycafe/pass-list.csv"));
+            List<String> lines = Files.readAllLines(
+                Paths.get("src/main/resources/cleancode/studycafe/pass-list.csv"));
             for (String line : lines) {
                 String[] values = line.split(",");
-                Type type = Type.valueOf(values[0]);
-                int duration = Integer.parseInt(values[1]);
-                int price = Integer.parseInt(values[2]);
-                Money money = Money.of(price);
-                double dRate = Double.parseDouble(values[3]);
-                DiscountRate discountRate = DiscountRate.of(dRate);
+                StudyCafeTicket studyCafeTicket = StudyCafeTicket.of(
+                    Type.valueOf(values[0]),
+                    Integer.parseInt(values[1]),
+                    Money.of(Integer.parseInt(values[2])),
+                    DiscountRate.of(Double.parseDouble(values[3]))
+                );
 
-                StudyCafeTicket studyCafeTicket = StudyCafeTicket.of(type, duration, money, discountRate);
-                STUDY_CAFE_TICKETS.add(studyCafeTicket);
+                this.studyCafeTickets = studyCafeTickets.add(studyCafeTicket);
             }
         } catch (IOException e) {
             throw new RuntimeException("파일을 읽는데 실패했습니다.", e);
@@ -36,14 +36,13 @@ public class PriceRepositoryImp implements PriceRepository {
     }
 
     @Override
-    public List<StudyCafeTicket> findAll() {
-        return STUDY_CAFE_TICKETS;
+    public StudyCafeTickets findAll() {
+        return studyCafeTickets;
     }
 
     @Override
-    public List<StudyCafeTicket> findByTickets(Type type) {
-        return STUDY_CAFE_TICKETS.stream()
-            .filter(studyCafePass -> studyCafePass.getTicket() == type)
-            .toList();
+    public StudyCafeTickets findByTickets(Type type) {
+        return findAll()
+            .filterByType(type);
     }
 }
