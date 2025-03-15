@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 import java.util.Objects;
 
 public class Money {
-    private double amount;
+    private final double amount;
 
     private Money(double amount) {
         this.amount = amount;

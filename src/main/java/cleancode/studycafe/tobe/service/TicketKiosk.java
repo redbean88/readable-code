@@ -62,8 +62,7 @@ public class TicketKiosk implements Kiosk {
         Ticket selectedTicket = inputHandler.getSelectTicket(tickets);
 
         switch (type) {
-            case HOURLY:
-            case WEEKLY:
+            case HOURLY, WEEKLY:
                 return Result.of(selectedTicket);
             case FIXED:
                 LockerTicket lockerTicket = lockerRepository.findByStudyCafeTicket(selectedTicket);

@@ -1,9 +1,10 @@
-package cleancode.studycafe.tobe.repository;
+package cleancode.studycafe.tobe.infra.io;
 
 import cleancode.studycafe.tobe.model.LockerTicket;
 import cleancode.studycafe.tobe.model.Ticket;
 import cleancode.studycafe.tobe.model.Type;
 import cleancode.studycafe.tobe.model.LockerTickets;
+import cleancode.studycafe.tobe.repository.LockerRepository;
 import cleancode.studycafe.tobe.vo.Money;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class LockerRepositoryImp implements LockerRepository {
 
-    public LockerTickets lockerTickets = LockerTickets.of();
+    private LockerTickets lockerTickets = LockerTickets.of();
 
     public LockerRepositoryImp() {
         try {

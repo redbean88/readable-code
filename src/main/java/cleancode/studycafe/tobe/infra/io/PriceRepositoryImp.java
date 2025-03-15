@@ -1,7 +1,8 @@
-package cleancode.studycafe.tobe.repository;
+package cleancode.studycafe.tobe.infra.io;
 
 import cleancode.studycafe.tobe.model.Ticket;
 import cleancode.studycafe.tobe.model.Type;
+import cleancode.studycafe.tobe.repository.PriceRepository;
 import cleancode.studycafe.tobe.vo.DiscountRate;
 import cleancode.studycafe.tobe.vo.Money;
 import cleancode.studycafe.tobe.model.Tickets;
