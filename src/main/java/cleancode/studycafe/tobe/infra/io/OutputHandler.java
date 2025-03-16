@@ -1,10 +1,12 @@
 package cleancode.studycafe.tobe.infra.io;
 
 import cleancode.studycafe.tobe.model.LockerTicket;
-
+import cleancode.studycafe.tobe.model.Ticket;
+import cleancode.studycafe.tobe.model.Tickets;
+import cleancode.studycafe.tobe.model.Type;
 import cleancode.studycafe.tobe.vo.Money;
 import cleancode.studycafe.tobe.vo.Result;
-import cleancode.studycafe.tobe.model.Tickets;
+import java.util.List;
 
 public class OutputHandler {
 
@@ -26,16 +28,38 @@ public class OutputHandler {
     public void showTicketsForSelection(Tickets tickets) {
         System.out.println();
         System.out.println("이용권 목록");
-        tickets.display();
+        List<Ticket> list = tickets.getList();
+        list.forEach(ticket -> {
+            Type type = ticket.getType();
+            Money money = ticket.getPrice();
+            int duration = ticket.getDuration();
+            switch (type) {
+                case HOURLY -> System.out.printf("%s시간권 - %s원%n", duration, money);
+                case WEEKLY, FIXED -> System.out.printf("%s주권 - %s원%n", duration, money);
+            }
+        });
+        for (int index = 0; index < list.size(); index++) {
+            Ticket ticket = list.get(index);
+            Type type = ticket.getType();
+            Money money = ticket.getPrice();
+            int duration = ticket.getDuration();
 
+            System.out.printf("%s. %s%n", index + 1, switch (type) {
+                case HOURLY -> String.format("%s시간권 - %s원", duration, money);
+                case WEEKLY, FIXED -> String.format("%s주권 - %s원", duration, money);
+            });
+        }
     }
 
     public void askLockerTicket(LockerTicket lockerTicket) {
         System.out.println();
-        String askMessage = String.format(
-            "사물함을 이용하시겠습니까? (%s)",
-            lockerTicket.display()
-        );
+        Type type = lockerTicket.getType();
+        Money money = lockerTicket.getMoney();
+        int duration = lockerTicket.getDuration();
+        String askMessage = String.format("사물함을 이용하시겠습니까? (%s)", switch (type) {
+            case HOURLY -> String.format("%s시간권 - %s원", duration, money);
+            case WEEKLY, FIXED -> String.format("%s주권 - %s원", duration, money);
+        });
 
         System.out.println(askMessage);
         System.out.println("1. 예 | 그 외. 아니오");
@@ -44,9 +68,10 @@ public class OutputHandler {
     public void showTicketOrderSummary(Result result) {
         System.out.println();
         System.out.println("이용 내역");
-        System.out.println("이용권: " + result.showSelectedTicket());
+        showTicketTypes(result);
+
         if (result.hasLockerTicket()) {
-            System.out.println("사물함: " + result.showLockerTicket());
+            showLockerTicketType(result);
         }
 
         System.out.println("이벤트 할인 금액: " + result.calculateDiscountPrice() + "원");
@@ -54,6 +79,28 @@ public class OutputHandler {
         Money totalPrice = result.calculateTotalPrice();
         System.out.println("총 결제 금액: " + totalPrice + "원");
         System.out.println();
+    }
+
+    private void showLockerTicketType(Result result) {
+        LockerTicket lockerTicket = result.getLockerTicket();
+        Type type = lockerTicket.getType();
+        Money money = lockerTicket.getMoney();
+        int duration = lockerTicket.getDuration();
+        System.out.printf("사물함: {}%n", switch (type) {
+            case HOURLY -> String.format("%s시간권 - %s원", duration, money);
+            case WEEKLY, FIXED -> String.format("%s주권 - %s원", duration, money);
+        });
+    }
+
+    private static void showTicketTypes(Result result) {
+        Ticket ticket = result.getTicket();
+        Type type = ticket.getType();
+        Money money = ticket.getPrice();
+        int duration = ticket.getDuration();
+        System.out.printf("이용권: %s", switch (type) {
+            case HOURLY -> String.format("%s시간권 - %s원", duration, money);
+            case WEEKLY, FIXED -> String.format("%s주권 - %s원", duration, money);
+        });
     }
 
     public void showSimpleMessage(String message) {

@@ -21,16 +21,8 @@ public class Result {
         return new Result(ticket, null);
     }
 
-    public String showSelectedTicket() {
-        return ticket.display();
-    }
-
     public boolean hasLockerTicket() {
         return lockerTicket != null;
-    }
-
-    public String showLockerTicket() {
-        return lockerTicket.display();
     }
 
     public Money calculateDiscountPrice() {
@@ -42,5 +34,13 @@ public class Result {
             .getPrice()
             .subtract(calculateDiscountPrice())
             .add(lockerTicket != null ? lockerTicket.getPrice() : Money.ofZero());
+    }
+
+    public LockerTicket getLockerTicket() {
+        return this.lockerTicket;
+    }
+
+    public Ticket getTicket() {
+        return this.ticket;
     }
 }

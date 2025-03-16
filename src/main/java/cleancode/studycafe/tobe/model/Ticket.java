@@ -44,13 +44,4 @@ public class Ticket {
         return Calculator.increaseBy(money, discountRate);
     }
 
-
-    public String display() {
-        return switch (type) {
-            case HOURLY -> String.format("%s시간권 - %s원", duration, money);
-            case WEEKLY -> String.format("%s주권 - %s원", duration, money);
-            case FIXED -> String.format("%s주권 - %s원", duration, money);
-        };
-    }
-
 }

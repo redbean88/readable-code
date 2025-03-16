@@ -33,18 +33,14 @@ public class Tickets {
         return of(filteredResult);
     }
 
-    public void display() {
-        list.stream().map(Ticket::display).forEach(System.out::println);
-        for (int index = 0; index < list.size(); index++) {
-            Ticket ticket = list.get(index);
-            System.out.println(String.format("%s. ", index + 1) + ticket.display());
-        }
-    }
-
     public Ticket get(int index) {
         if (index > list.size() - 1) {
             throw new AppException("잘못된 입력입니다.");
         }
         return list.get(index);
+    }
+
+    public List<Ticket> getList() {
+        return this.list;
     }
 }
