@@ -10,8 +10,7 @@ public class InputHandler {
 
     private static final Scanner SCANNER = new Scanner(System.in);
 
-    public StudyCafePassType getPassTypeSelectingUserAction() {
-        String userInput = SCANNER.nextLine();
+    public StudyCafePassType getPassTypeBy(String userInput) {
 
         if ("1".equals(userInput)) {
             return StudyCafePassType.HOURLY;
@@ -25,8 +24,7 @@ public class InputHandler {
         throw new AppException("잘못된 입력입니다.");
     }
 
-    public StudyCafePass getSelectPass(List<StudyCafePass> passes) {
-        String userInput = SCANNER.nextLine();
+    public StudyCafePass getSelectPass(List<StudyCafePass> passes, String userInput) {
         int selectedIndex = Integer.parseInt(userInput) - 1;
         return passes.get(selectedIndex);
     }
