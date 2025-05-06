@@ -24,13 +24,19 @@ public class InputHandler {
         throw new AppException("잘못된 입력입니다.");
     }
 
-    public StudyCafePass getSelectPass(List<StudyCafePass> passes, String userInput) {
-        int selectedIndex = Integer.parseInt(userInput) - 1;
-        return passes.get(selectedIndex);
+    public String getUserInput() {
+        return SCANNER.nextLine();
     }
 
-    public boolean getLockerSelection() {
-        String userInput = SCANNER.nextLine();
+    public StudyCafePass getSelectPass(List<StudyCafePass> passes, String userInput) {
+        int selectedIndex = Integer.parseInt(userInput) - 1;
+        if(selectedIndex < passes.size()) {
+            return passes.get(selectedIndex);
+        }
+        throw new AppException("잘못된 입력입니다.");
+    }
+
+    public boolean getLockerSelection(String userInput) {
         return "1".equals(userInput);
     }
 
