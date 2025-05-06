@@ -42,13 +42,13 @@ public class InputHandler {
         throw new AppException("잘못된 입력입니다.");
     }
 
-    public boolean getLockerSelection() {
+    public boolean isLockerSelected() {
         String userInput = getUserInput();
-        return getLockerSelection(userInput);
+        return isLockerSelected(userInput);
     }
 
 
-    public boolean getLockerSelection(String userInput) {
+    public boolean isLockerSelected(String userInput) {
         return "1".equals(userInput);
     }
 

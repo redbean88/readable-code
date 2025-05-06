@@ -1,8 +1,8 @@
 package cleancode.studycafe.tobe;
 
+import cleancode.studycafe.tobe.controller.Controller;
 import cleancode.studycafe.tobe.exception.AppException;
-import cleancode.studycafe.tobe.io.InputHandler;
-import cleancode.studycafe.tobe.io.OutputHandler;
+import cleancode.studycafe.tobe.exception.FileReadException;
 import cleancode.studycafe.tobe.model.StudyCafeLockerPass;
 import cleancode.studycafe.tobe.model.StudyCafeLockerPasses;
 import cleancode.studycafe.tobe.model.StudyCafePass;
@@ -14,51 +14,59 @@ import java.util.Optional;
 
 public class StudyCafePassMachine {
 
-    private final InputHandler inputHandler = new InputHandler();
 
-    private final OutputHandler outputHandler = new OutputHandler();
-
+    private final Controller controller;
     private final StudyCafeRepository studyCafeRepository;
 
-    public StudyCafePassMachine(StudyCafeRepository studyCafeRepository) {
+    public StudyCafePassMachine(StudyCafeRepository studyCafeRepository, Controller controller) {
         this.studyCafeRepository = studyCafeRepository;
+        this.controller = controller;
     }
 
     public void run() {
         try {
-            outputHandler.showWelcomeMessage();
-            outputHandler.showAnnouncement();
+            controller.showWelcomeMessage();
+            controller.showAnnouncement();
 
-            outputHandler.askPassTypeSelection();
+            StudyCafePass selectedPass = selectedStudyCafePassByUser();
+            Optional<StudyCafeLockerPass> optionalLockerPass = selectedStudyCafeLockerPassByUser(selectedPass);
 
-            StudyCafePassType studyCafePassType = inputHandler.getPassTypeBy();
-            StudyCafePasses studyCafePasses = studyCafeRepository.findAllStudyCafePasses();
-
-            List<StudyCafePass> hourlyPasses = studyCafePasses.isEqualsPassTypeBy(studyCafePassType);
-
-            outputHandler.showPassListForSelection(hourlyPasses);
-            StudyCafePass selectedPass = inputHandler.getSelectPass(hourlyPasses);
-
-            StudyCafeLockerPasses lockerPasses = studyCafeRepository.findAllLockerPasses();
-            Optional<StudyCafeLockerPass> lockerPass = lockerPasses.isLockerUseAvailable(selectedPass);
-
-            if (lockerPass.isPresent()) {
-                outputHandler.askLockerPass(lockerPass.get());
-                boolean lockerSelection = inputHandler.getLockerSelection();
-
-                if (lockerSelection) {
-                    outputHandler.showPassOrderSummary(selectedPass, lockerPass.get());
-                } else {
-                    outputHandler.showPassOrderSummary(selectedPass);
-                }
-            } else {
-                outputHandler.showPassOrderSummary(selectedPass);
-            }
+            optionalLockerPass.ifPresentOrElse(
+                lockerPass -> controller.showPassOrderSummary(selectedPass, lockerPass),
+                () -> controller.showPassOrderSummary(selectedPass)
+            );
 
         } catch (AppException e) {
-            outputHandler.showSimpleMessage(e.getMessage());
+            controller.showSimpleMessage(e.getMessage());
         } catch (Exception e) {
-            outputHandler.showSimpleMessage("알 수 없는 오류가 발생했습니다.");
+            controller.showSimpleMessage("알 수 없는 오류가 발생했습니다.");
         }
+    }
+
+    private Optional<StudyCafeLockerPass> selectedStudyCafeLockerPassByUser(
+        StudyCafePass selectedPass)
+        throws FileReadException {
+        StudyCafeLockerPasses lockerPasses = studyCafeRepository.findAllLockerPasses();
+        Optional<StudyCafeLockerPass> lockerPass = lockerPasses.isLockerUseAvailable(selectedPass);
+
+        if (lockerPass.isPresent()) {
+            controller.askLockerPass(lockerPass.get());
+            boolean isLockerSelected = controller.isLockerSelected();
+            if (isLockerSelected) {
+                return lockerPass;
+            }
+        }
+        return Optional.empty();
+    }
+
+    private StudyCafePass selectedStudyCafePassByUser() throws FileReadException {
+        controller.askPassTypeSelection();
+        StudyCafePassType studyCafePassType = controller.getPassTypeBy();
+        StudyCafePasses studyCafePasses = studyCafeRepository.findAllStudyCafePasses();
+
+        List<StudyCafePass> passes = studyCafePasses.isEqualsPassTypeBy(studyCafePassType);
+
+        controller.showPassListForSelection(passes);
+        return controller.getSelectPass(passes);
     }
 }
