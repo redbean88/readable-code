@@ -13,7 +13,6 @@ public class StudyCafeApplication {
         String lockerCsv = "src/main/resources/cleancode/studycafe/locker.csv";
         String passListCsv = "src/main/resources/cleancode/studycafe/pass-list.csv";
         StudyCafeRepository studyCafeRepository = new StudyCafeRepositoryImp(passListCsv, lockerCsv);
-
         Controller controller = new Controller(new InputHandler(), new OutputHandler());
 
         StudyCafePassMachine studyCafePassMachine = new StudyCafePassMachine(studyCafeRepository, controller);

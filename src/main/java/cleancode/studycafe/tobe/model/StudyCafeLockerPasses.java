@@ -20,11 +20,9 @@ public class StudyCafeLockerPasses {
     }
 
     public Optional<StudyCafeLockerPass> isLockerUseAvailable(StudyCafePass selectedPass) {
-        StudyCafePassType passType = selectedPass.getPassType();
-        int duration = selectedPass.getDuration();
         return studyCafeLockerPassList.stream()
-            .filter(pass -> pass.isEqualPassType(passType))
-            .filter(pass -> pass.isEqualDuration(duration))
+            .filter(selectedPass::isEqualsPassTypeBy)
+            .filter(selectedPass::isEqualDuration)
             .findFirst();
     }
 }

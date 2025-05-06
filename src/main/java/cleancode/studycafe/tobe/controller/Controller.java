@@ -2,6 +2,7 @@ package cleancode.studycafe.tobe.controller;
 
 import cleancode.studycafe.tobe.io.InputHandler;
 import cleancode.studycafe.tobe.io.OutputHandler;
+import cleancode.studycafe.tobe.model.Order;
 import cleancode.studycafe.tobe.model.StudyCafeLockerPass;
 import cleancode.studycafe.tobe.model.StudyCafePass;
 import cleancode.studycafe.tobe.model.StudyCafePassType;
@@ -49,15 +50,12 @@ public class Controller {
         return inputHandler.isLockerSelected();
     }
 
-    public void showPassOrderSummary(StudyCafePass selectedPass, StudyCafeLockerPass studyCafeLockerPass) {
-        outputHandler.showPassOrderSummary(selectedPass, studyCafeLockerPass);
-    }
-
-    public void showPassOrderSummary(StudyCafePass selectedPass) {
+    public void showPassOrderSummary(Order selectedPass) {
         outputHandler.showPassOrderSummary(selectedPass);
     }
 
     public void showSimpleMessage(String message) {
         outputHandler.showSimpleMessage(message);
     }
+
 }

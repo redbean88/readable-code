@@ -3,6 +3,7 @@ package cleancode.studycafe.tobe;
 import cleancode.studycafe.tobe.controller.Controller;
 import cleancode.studycafe.tobe.exception.AppException;
 import cleancode.studycafe.tobe.exception.FileReadException;
+import cleancode.studycafe.tobe.model.Order;
 import cleancode.studycafe.tobe.model.StudyCafeLockerPass;
 import cleancode.studycafe.tobe.model.StudyCafeLockerPasses;
 import cleancode.studycafe.tobe.model.StudyCafePass;
@@ -13,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class StudyCafePassMachine {
-
 
     private final Controller controller;
     private final StudyCafeRepository studyCafeRepository;
@@ -29,23 +29,18 @@ public class StudyCafePassMachine {
             controller.showAnnouncement();
 
             StudyCafePass selectedPass = selectedStudyCafePassByUser();
-            Optional<StudyCafeLockerPass> optionalLockerPass = selectedStudyCafeLockerPassByUser(selectedPass);
+            Order order = selectedStudyCafeLockerPassByUser(selectedPass);
+            controller.showPassOrderSummary(order);
 
-            optionalLockerPass.ifPresentOrElse(
-                lockerPass -> controller.showPassOrderSummary(selectedPass, lockerPass),
-                () -> controller.showPassOrderSummary(selectedPass)
-            );
-
-        } catch (AppException e) {
+        } catch (AppException | FileReadException e) {
             controller.showSimpleMessage(e.getMessage());
         } catch (Exception e) {
             controller.showSimpleMessage("알 수 없는 오류가 발생했습니다.");
         }
     }
 
-    private Optional<StudyCafeLockerPass> selectedStudyCafeLockerPassByUser(
-        StudyCafePass selectedPass)
-        throws FileReadException {
+    private Order selectedStudyCafeLockerPassByUser(StudyCafePass selectedPass) throws FileReadException {
+
         StudyCafeLockerPasses lockerPasses = studyCafeRepository.findAllLockerPasses();
         Optional<StudyCafeLockerPass> lockerPass = lockerPasses.isLockerUseAvailable(selectedPass);
 
@@ -53,10 +48,10 @@ public class StudyCafePassMachine {
             controller.askLockerPass(lockerPass.get());
             boolean isLockerSelected = controller.isLockerSelected();
             if (isLockerSelected) {
-                return lockerPass;
+                return Order.of(selectedPass, lockerPass.get());
             }
         }
-        return Optional.empty();
+        return Order.of(selectedPass);
     }
 
     private StudyCafePass selectedStudyCafePassByUser() throws FileReadException {

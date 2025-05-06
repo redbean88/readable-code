@@ -20,7 +20,7 @@ public class StudyCafePasses {
 
     public List<StudyCafePass> isEqualsPassTypeBy(StudyCafePassType studyCafePassType) {
         return studyCafePassList.stream()
-            .filter(studyCafePass -> studyCafePass.isEqualsPassTypeBy(studyCafePassType))
+            .filter(studyCafePassType::isEqualsPassTypeBy)
             .toList();
     }
 }
