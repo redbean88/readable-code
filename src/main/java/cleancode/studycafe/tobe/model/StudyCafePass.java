@@ -47,4 +47,7 @@ public class StudyCafePass {
         return "";
     }
 
+    public boolean isEqualsPassTypeBy(StudyCafePassType studyCafePassType) {
+        return this.passType == studyCafePassType;
+    }
 }

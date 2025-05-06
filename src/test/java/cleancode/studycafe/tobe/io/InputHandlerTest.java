@@ -7,6 +7,7 @@ import cleancode.studycafe.tobe.exception.AppException;
 import cleancode.studycafe.tobe.exception.FileReadException;
 import cleancode.studycafe.tobe.model.StudyCafePass;
 import cleancode.studycafe.tobe.model.StudyCafePassType;
+import cleancode.studycafe.tobe.model.StudyCafePasses;
 import cleancode.studycafe.tobe.repository.StudyCafeRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -87,9 +88,9 @@ class InputHandlerTest {
     })
     void 시간권_목록_중에_선택한다(String inputText, StudyCafePassType passType, int duration, int price, double discountRate) throws FileReadException {
         // given
-        List<StudyCafePass> studyCafePasses = studyCafeRepository.findAllStudyCafePasses();
+        StudyCafePasses studyCafePasses = studyCafeRepository.findAllStudyCafePasses();
 
-        List<StudyCafePass> passes = studyCafePasses.stream()
+        List<StudyCafePass> passes = studyCafePasses.getStudyCafePassList().stream()
             .filter(studyCafePass -> studyCafePass.getPassType() == passType)
             .toList();
 
@@ -106,9 +107,9 @@ class InputHandlerTest {
     @CsvSource(value = {"HOURLY","WEEKLY","FIXED"})
     void 지원하지_않는_이용권_목록_중에_선택한다(StudyCafePassType studyCafePassType) throws FileReadException {
         // given
-        List<StudyCafePass> studyCafePasses = studyCafeRepository.findAllStudyCafePasses();
+        StudyCafePasses studyCafePasses = studyCafeRepository.findAllStudyCafePasses();
 
-        List<StudyCafePass> passes = studyCafePasses.stream()
+        List<StudyCafePass> passes = studyCafePasses.getStudyCafePassList().stream()
             .filter(studyCafePass -> studyCafePass.getPassType() == studyCafePassType)
             .toList();
         String inputText = String.valueOf(passes.size()+1);
@@ -132,9 +133,9 @@ class InputHandlerTest {
     })
     void 주간권_목록_중에_선택한다(String inputText, StudyCafePassType passType, int duration, int price, double discountRate) throws FileReadException {
         // given
-        List<StudyCafePass> studyCafePasses = studyCafeRepository.findAllStudyCafePasses();
+        StudyCafePasses studyCafePasses = studyCafeRepository.findAllStudyCafePasses();
 
-        List<StudyCafePass> passes = studyCafePasses.stream()
+        List<StudyCafePass> passes = studyCafePasses.getStudyCafePassList().stream()
             .filter(studyCafePass -> studyCafePass.getPassType() == passType)
             .toList();
 
@@ -154,9 +155,9 @@ class InputHandlerTest {
     })
     void 고정석_목록_중에_선택한다(String inputText, StudyCafePassType passType, int duration, int price, double discountRate) throws FileReadException {
         // given
-        List<StudyCafePass> studyCafePasses = studyCafeRepository.findAllStudyCafePasses();
+        StudyCafePasses studyCafePasses = studyCafeRepository.findAllStudyCafePasses();
 
-        List<StudyCafePass> passes = studyCafePasses.stream()
+        List<StudyCafePass> passes = studyCafePasses.getStudyCafePassList().stream()
             .filter(studyCafePass -> studyCafePass.getPassType() == passType)
             .toList();
 

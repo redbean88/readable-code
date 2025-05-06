@@ -22,7 +22,7 @@ class StudyCafeRepositoryImpTest {
         StudyCafeRepository studyCafeRepository = new StudyCafeRepositoryImp(passListCsv,
             lockerCsv);
         // when
-        List<StudyCafePass> studyCafePasses = studyCafeRepository.findAllStudyCafePasses();
+        List<StudyCafePass> studyCafePasses = studyCafeRepository.findAllStudyCafePasses().getStudyCafePassList();
 
         // then
         assertThat(studyCafePasses).hasSizeGreaterThan(0).hasSize(13);
@@ -53,7 +53,7 @@ class StudyCafeRepositoryImpTest {
             lockerCsv);
         // when
         // then
-        List<StudyCafeLockerPass> studyCafeLockerPasses = studyCafeRepository.findAllLockerPasses();
+        List<StudyCafeLockerPass> studyCafeLockerPasses = studyCafeRepository.findAllLockerPasses().getStudyCafeLockerPassList();
         assertThat(studyCafeLockerPasses).hasSizeGreaterThan(0).hasSize(2);
     }
 
